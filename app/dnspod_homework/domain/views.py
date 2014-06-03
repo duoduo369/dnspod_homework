@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_406_NOT_ACCEPTABLE
-from dnspod.apicn import DomainList, DomainCreate
+from dnspod.apicn import DomainList, DomainCreate, DomainRemove, DomainInfo, DomainStatus
 from auth.views import login_required, get_login_pair
 
 class DomainListView(APIView):
@@ -13,8 +13,25 @@ class DomainListView(APIView):
         '''
             获得domain列表
         '''
-        api = DomainList(**get_login_pair(request))
-        return Response(api().get('domains'))
+        domain_type = request.GET.get('type', 'all')
+        offset = request.GET.get('offset', 0)
+        length = request.GET.get('length', 100)
+
+        kwargs = get_login_pair(request)
+        kwargs['type'] = domain_type
+        kwargs['offset'] = offset
+        kwargs['length'] = length
+
+        api = DomainList(**kwargs)
+        try:
+            rep = api().get('domains')
+        except Exception as e:
+            rep = e.message
+            # 没有域名时返回空列表
+            if rep['status']['code'] == '9':
+                return Response([])
+            return Response(rep, HTTP_406_NOT_ACCEPTABLE)
+        return Response(rep)
 
     @login_required
     def post(self, request):
@@ -32,5 +49,37 @@ class DomainListView(APIView):
 
 class DomainView(APIView):
 
-    def get(self, request, ):
-        ''
+    @login_required
+    def get(self, request, domain_id):
+        api = DomainInfo(domain_id, **get_login_pair(request))
+        try:
+            rep = api().get('domain')
+        except Exception as e:
+            rep = e.message
+            return Response(rep, HTTP_406_NOT_ACCEPTABLE)
+        return Response(rep)
+
+    def put(self, request, domain_id):
+        try:
+            status = request.DATA['status']
+        except KeyError as e:
+            return Response('need status {enable, disable}', HTTP_400_BAD_REQUEST)
+        kwargs = get_login_pair(request)
+        kwargs['domain_id'] = domain_id
+        api = DomainStatus(status, **kwargs)
+        try:
+            rep = api()
+        except Exception as e:
+            rep = e.message
+            return Response(rep, HTTP_406_NOT_ACCEPTABLE)
+        return Response(rep)
+
+    @login_required
+    def delete(self, request, domain_id):
+        api = DomainRemove(domain_id, **get_login_pair(request))
+        try:
+            rep = api()
+        except Exception as e:
+            rep = e.message
+            return Response(rep, HTTP_406_NOT_ACCEPTABLE)
+        return Response(rep)
