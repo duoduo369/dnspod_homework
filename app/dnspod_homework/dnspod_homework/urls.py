@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('auth.urls')),
     url(r'', include('domain.urls')),
+    url(r'', include('record.urls')),
 )

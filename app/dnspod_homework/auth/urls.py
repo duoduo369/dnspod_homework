@@ -5,5 +5,6 @@ from auth import views
 
 urlpatterns = patterns('',
     url(r'^authenticate$', views.AuthenticateView.as_view()),
+    url(r'^logout$', views.LogoutView.as_view()),
 )
 

@@ -34,6 +34,15 @@ def get_login_pair(request):
     '''
     return dict(email=request.session['email'], password=request.session['password'])
 
+class LogoutView(APIView):
+
+    def get(self, request):
+        login_pair_key = ('email', 'password')
+        for key in login_pair_key:
+            if key in request.session:
+                del request.session[key]
+        return Response('logout success')
+
 
 class AuthenticateView(APIView):
 
