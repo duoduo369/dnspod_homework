@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
-from rest_framework.views import APIView
+
+from dnspod.apicn import (DomainCreate, DomainInfo, DomainList, DomainRemove,
+                          DomainStatus)
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_406_NOT_ACCEPTABLE
-from dnspod.apicn import DomainList, DomainCreate, DomainRemove, DomainInfo, DomainStatus
-from auth.views import login_required, get_login_pair
+from rest_framework.views import APIView
+
+from auth.views import get_login_pair, login_required
+
 
 class DomainListView(APIView):
 
@@ -59,6 +63,7 @@ class DomainView(APIView):
             return Response(rep, HTTP_406_NOT_ACCEPTABLE)
         return Response(rep)
 
+    @login_required
     def put(self, request, domain_id):
         try:
             status = request.DATA['status']
