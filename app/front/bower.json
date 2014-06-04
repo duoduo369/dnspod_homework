@@ -12,7 +12,8 @@
     "jquery-mockjax": "~1.5.0",
     "moment": "~2.1.0",
     "bootstrap": "~3.1.1",
-    "jQuery.serializeObject": "~2.0.3"
+    "jQuery.serializeObject": "~2.0.3",
+    "messenger": "~1.4.1"
   },
   "overrides": {
     "backbone": {
