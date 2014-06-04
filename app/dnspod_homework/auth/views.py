@@ -59,7 +59,7 @@ class AuthenticateView(APIView):
         password = params.get('password', '')
         api = UserDetail(email=email, password=password)
         try:
-            rep = api()
+            rep = api()['info']['user']
             request.session['email'] = email
             request.session['password'] = password
         except Exception as e:
