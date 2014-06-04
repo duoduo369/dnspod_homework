@@ -14,7 +14,8 @@ module.exports = class DomainCollectionView extends CollectionView
 
   initialize: =>
     super
-    @collection.fetch()
+    @collection.fetch
+      data: @collection.options
 
   add_dom: =>
     $('<div>')

@@ -14,6 +14,10 @@ module.exports = class HomeController extends Controller
     @reuse 'header', HeaderView, region: 'header'
 
   index: (params, route, options) ->
+    type = 'all'
+    if options['query']['type']
+      type = options['query']['type']
     @domainCollectionView = new DomainCollectionView
       collection: new DomainCollection
+        type: type
       region: 'content'
