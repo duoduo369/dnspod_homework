@@ -13,7 +13,7 @@ exports.config =
   files:
     javascripts:
       joinTo:
-        'javascripts/app.js': /^app|(?!zarfx)/
+        'javascripts/app.js': /^app/
         'javascripts/vendor.js': /^(?!app)/
 
     stylesheets:

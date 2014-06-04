@@ -11,7 +11,8 @@
     "h5bp-helpers": "~0.1.0",
     "jquery-mockjax": "~1.5.0",
     "moment": "~2.1.0",
-    "bootstrap": "~3.1.1"
+    "bootstrap": "~3.1.1",
+    "jQuery.serializeObject": "~2.0.3"
   },
   "overrides": {
     "backbone": {
