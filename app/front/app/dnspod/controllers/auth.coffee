@@ -7,13 +7,13 @@ subscribe = Chaplin.mediator.subscribe
 
 module.exports = class AuthController extends Controller
 
-  beforeAction: (params, route, options)->
+  beforeAction: (params, route, options) ->
     @reuse 'home', HomeView
 
-  login: (params, route, options)->
+  login: (params, route, options) ->
     @loginView = new LoginView
       region: 'container'
-    subscribe('authenticate', (data)->
+    subscribe('authenticate', (data) ->
       loginModel = new LoginModel
       loginModel.save(data).success((res) ->
         localStorage.setItem('user', res)

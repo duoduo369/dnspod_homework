@@ -1,11 +1,11 @@
-DomainCollection = require 'common/models/domain-collection'
+RecordCollection = require 'common/models/record-collection'
 Controller = require 'common/controllers/base/controller'
 HeaderView = require 'dnspod/views/common/header-view'
 HomeView = require 'dnspod/views/home/home-view'
 IndexView = require 'dnspod/views/home/index-view'
-DomainCollectionView = require 'dnspod/views/domain/domain-collection-view'
+RecordCollectionView = require 'dnspod/views/record/record-collection-view'
 
-module.exports = class HomeController extends Controller
+module.exports = class DomainController extends Controller
 
   beforeAction: (params, route, options) ->
     super
@@ -13,7 +13,9 @@ module.exports = class HomeController extends Controller
     @reuse 'index', IndexView, region: 'container'
     @reuse 'header', HeaderView, region: 'header'
 
-  index: (params, route, options) ->
-    @domainCollectionView = new DomainCollectionView
-      collection: new DomainCollection
+  records: (params, route, options) ->
+    domain_id = params['domain_id']
+    @recordCollectionView = new RecordCollectionView
+      collection: new RecordCollection
+        domain_id: domain_id
       region: 'content'
