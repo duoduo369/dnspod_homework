@@ -1,7 +1,8 @@
+DomainCollection = require 'common/models/domain-collection'
 Controller = require 'common/controllers/base/controller'
-ListView = require 'dnspod/views/home/list-view'
 HeaderView = require 'dnspod/views/common/header-view'
 HomeView = require 'dnspod/views/home/home-view'
+DomainCollectionView = require 'dnspod/views/domain/domain-collection-view'
 
 module.exports = class HomeController extends Controller
 
@@ -10,5 +11,6 @@ module.exports = class HomeController extends Controller
     @reuse 'header', HeaderView, region: 'header'
 
   index: ->
-    new ListView
+    @domainCollectionView = new DomainCollectionView
+      collection: new DomainCollection
       region: 'content'
