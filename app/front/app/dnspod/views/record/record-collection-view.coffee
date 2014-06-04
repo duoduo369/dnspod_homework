@@ -1,6 +1,6 @@
 CollectionView = require 'common/views/base/collection-view'
 ItemView = require './record-item-view'
-DomainItem = require 'common/models/record-item'
+RecordItem = require 'common/models/record-item'
 
 module.exports = class RecordCollectionView extends CollectionView
   autoRender: true
