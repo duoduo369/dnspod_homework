@@ -8,9 +8,16 @@ module.exports = class Collection extends Chaplin.Collection
   # Use the project base model per default, not Chaplin.Model
   model: Model
 
-  url: ->
-    "#{@apiRoot}#{@urlPath()}"
-
   initialize: (options={})=>
     super
     @options = options
+
+  url: ->
+    "#{@apiRoot}#{@urlPath()}?#{@querystring(@queryParams())}"
+
+  querystring: (params) ->
+    params.access_token = localStorage.getItem 'access_token'
+    _.map(params, (v, k) -> "#{k}=#{encodeURIComponent v}").join '&'
+
+  queryParams: ->
+    {}

@@ -10,3 +10,10 @@ module.exports = class Model extends Chaplin.Model
   initialize: (options={})=>
     super
     @options = options
+
+  querystring: (params) ->
+    params.access_token = localStorage.getItem 'access_token'
+    _.map(params, (v, k) -> "#{k}=#{encodeURIComponent v}").join '&'
+
+  queryParams: ->
+    {}
