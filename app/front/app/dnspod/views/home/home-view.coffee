@@ -10,5 +10,4 @@ module.exports = class HomeView extends View
   regions:
     'header': 'header'
     'container': '#container'
-    'content': '#content'
     'footer': 'footer'

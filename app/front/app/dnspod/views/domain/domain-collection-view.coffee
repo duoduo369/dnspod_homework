@@ -9,7 +9,6 @@ module.exports = class DomainCollectionView extends CollectionView
 
   initialize: =>
     super
-    console.log 'abc'
     @collection.fetch
       success: ->
         console.log 'success'
