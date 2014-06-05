@@ -12,7 +12,7 @@ module.exports = class Collection extends Chaplin.Collection
     super
     @options = options
 
-  url: ->
+  url: =>
     "#{@apiRoot}#{@urlPath()}?#{@querystring(@queryParams())}"
 
   querystring: (params) ->

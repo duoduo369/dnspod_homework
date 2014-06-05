@@ -9,7 +9,7 @@ module.exports = class RecordCollectionView extends CollectionView
   listSelector: '.list'
   events:
     'click .add': 'add_dom'
-    'submit form': 'add_domain'
+    'submit form': 'add_record'
     'click .cancel': 'cancel_add'
 
   initialize: =>
@@ -17,35 +17,78 @@ module.exports = class RecordCollectionView extends CollectionView
     @collection.fetch()
 
   add_dom: =>
-    $('<div>')
-      .addClass('row')
+    $('<form class="form">')
       .addClass('entry')
       .html('''
-        <form >
-          <div class="col-md-3">
-            <input class='form-control' name='domain' placeholder='请输入您的域名'/>
+        <div class='row'>
+          <div class='col-md-2'>
+            <select class="form-control" name='name'>
+              <option value='www'>www</option>
+              <option value='@'>@</option>
+              <option value='*'>*</option>
+            </select>
           </div>
-          <button class='btn btn-primary'>确定</button>
-          <button class='btn cancel'>取消</button>
-        </form>
+          <div class='col-md-2'>
+            <select class="form-control" name='record_type'>
+              <option value='A'>A</option>
+              <option value='CNAME'>CNAME</option>
+              <option value='MX'>MX</option>
+              <option value='TXT'>TXT</option>
+              <option value='NS'>NS</option>
+              <option value='AAAA'>AAAA</option>
+              <option value='SRV'>SRV</option>
+              <option value='URL'>URL</option>
+            </select>
+          </div>
+          <div class='col-md-2'>
+            <select class="form-control" name='line'>
+              <option value='默认'>默认</option>
+              <option value='电信'>电信</option>
+              <option value='联通'>联通</option>
+              <option value='教育网'>教育网</option>
+              <option value='百度'>百度</option>
+              <option value='搜索引擎'>搜索引擎</option>
+            </select>
+          </div>
+          <div class='col-md-2'>
+            <input class='form-control' name='value' placeholder='记录值'/>
+          </div>
+          <div class='col-md-1'>
+            <input class='form-control' name='mx' placeholder='MX优先级' value='1'/>
+          </div>
+          <div class='col-md-1'>
+            <input class='form-control' name='ttl' placeholder='TTL' value='600'/>
+          </div>
+          <div class='col-md-2'>
+            <button type='submit' class='btn btn-sm btn-primary'>确定</button>
+            <button class='btn btn-sm cancel'>取消</button>
+          </div>
+        </div>
       ''')
       .prependTo(@$('.add-form-list'))
 
-  add_domain: (e)=>
+  add_record: (e)=>
     $cur = $(e.currentTarget)
     data = $cur.serializeObject()
-    domain = new DomainItem(data)
-    domain.save()
+    data['domain_id'] = @collection.options['domain_id']
+    item = new RecordItem(data)
+    console.log item
+    item.save()
       .success((rep)=>
-        domain.set('name', data['domain'])
-        @collection.unshift(domain)
+        @collection.unshift(item)
         $cur.parent().remove()
+        console.log 'su'
       )
       .error((rep) ->
+        console.log 'error'
+        if rep.responseJSON['status']?
+          message = rep.responseJSON['status']['message']
+        else
+          message = rep.responseJSON
         messenger = new Messenger
         messenger.post
           type: 'error'
-          message: rep.responseJSON['status']['message']
+          message: message
           hideAfter: 3
     )
     return false
