@@ -74,6 +74,7 @@ class DomainView(APIView):
         api = DomainStatus(status, **kwargs)
         try:
             rep = api()
+            rep = {'status': status}
         except Exception as e:
             rep = e.message
             return Response(rep, HTTP_406_NOT_ACCEPTABLE)
