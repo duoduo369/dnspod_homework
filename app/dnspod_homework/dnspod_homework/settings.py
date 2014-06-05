@@ -28,6 +28,7 @@ ALLOWED_HOSTS = [
     'localhost', # for debug
     '127.0.0.1', # for debug
     '115.28.11.182',
+    'dnspod_homework_django',
     '*',
 ]
 
