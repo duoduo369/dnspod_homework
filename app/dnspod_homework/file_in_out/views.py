@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
-from rest_framework.settings import api_settings
-from rest_framework_csv import renderers as r
-from domain.views import DomainListView
-from auth.views import login_required
-from utils.make_excel import make_excel
+
 from django.http import HttpResponse
+
+from auth.views import login_required
+from domain.views import DomainListView
+from utils.make_excel import make_excel
+
 
 class OutDomainListView(DomainListView):
 
-    #renderer_classes = [r.CSVRenderer, ] + api_settings.DEFAULT_RENDERER_CLASSES
     @login_required
     def get(self, request):
         rep = super(OutDomainListView, self).get(request)
@@ -28,4 +28,3 @@ class OutDomainListView(DomainListView):
         )
         excel.content().save(response)
         return response
-
