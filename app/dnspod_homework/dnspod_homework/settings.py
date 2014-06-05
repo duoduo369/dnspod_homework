@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'auth',
     'domain',
     'record',
+    'file_in_out',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'', include('auth.urls')),
     url(r'', include('domain.urls')),
     url(r'', include('record.urls')),
+    url(r'', include('file_in_out.urls')),
 )
