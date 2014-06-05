@@ -49,7 +49,7 @@ class RecordListView(APIView):
         for attr, default in RECORD_NEED_MAPPER.iteritems():
             params[attr] = request.DATA.get(attr, default)
             if not params[attr]:
-                return Response(u'need {args}'.format(args=e.message),
+                return Response(u'need {args}'.format(args=attr),
                                 HTTP_400_BAD_REQUEST)
         if params['record_type'] == 'MX':
             request.DATA['mx']
