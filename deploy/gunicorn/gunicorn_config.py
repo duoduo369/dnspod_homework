@@ -1,6 +1,6 @@
 import multiprocessing
 BASE_PATH = '/opt/dnspod_homework'
-bind = "0:8001"
+bind = "0:9000"
 # workers = multiprocessing.cpu_count()
 # demo项目 1个worker
 workers = 1
