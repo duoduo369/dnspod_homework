@@ -1,6 +1,7 @@
 CollectionView = require 'common/views/base/collection-view'
 ItemView = require './domain-item-view'
 DomainItem = require 'common/models/domain-item'
+DownloadDomainModel = require 'common/models/download-domain'
 
 module.exports = class DomainCollectionView extends CollectionView
   autoRender: true
@@ -12,6 +13,7 @@ module.exports = class DomainCollectionView extends CollectionView
     'submit form': 'add_domain'
     'click .cancel': 'cancel_add'
     'click .delete': 'delete_domain'
+    'click .export': 'export_domain'
 
   initialize: =>
     super
@@ -75,4 +77,9 @@ module.exports = class DomainCollectionView extends CollectionView
           action: () ->
             msg.hide()
     )
+
+  export_domain: (e) =>
+    download_domain = new DownloadDomainModel(@collection.options)
+    url = download_domain.url()
+    $.fileDownload(url)
 

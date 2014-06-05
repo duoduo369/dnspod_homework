@@ -19,5 +19,5 @@ module.exports = class Model extends Chaplin.Model
     params.access_token = localStorage.getItem 'access_token'
     _.map(params, (v, k) -> "#{k}=#{encodeURIComponent v}").join '&'
 
-  queryParams: ->
-    {}
+  queryParams: =>
+    @options
