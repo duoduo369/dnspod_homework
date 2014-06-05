@@ -11,6 +11,7 @@ module.exports = class DomainCollectionView extends CollectionView
     'click .add': 'add_dom'
     'submit form': 'add_domain'
     'click .cancel': 'cancel_add'
+    'click .delete': 'delete_domain'
 
   initialize: =>
     super
@@ -32,12 +33,12 @@ module.exports = class DomainCollectionView extends CollectionView
       ''')
       .prependTo(@$('.add-form-list'))
 
-  add_domain: (e)=>
+  add_domain: (e) =>
     $cur = $(e.currentTarget)
     data = $cur.serializeObject()
     domain = new DomainItem(data)
     domain.save()
-      .success((rep)=>
+      .success((rep) =>
         domain.set('name', data['domain'])
         @collection.unshift(domain)
         $cur.parent().remove()
@@ -51,7 +52,27 @@ module.exports = class DomainCollectionView extends CollectionView
     )
     return false
 
-  cancel_add: (e)->
-    cur = e.currentTarget
-    $(cur).parent().parent().remove()
+  cancel_add: (e) ->
+    $cur = $(e.currentTarget)
+    $cur.parent().parent().remove()
     return false
+
+  delete_domain: (e) =>
+    $cur = $(e.currentTarget)
+    msg = Messenger().post(
+      message: "确定删除?",
+
+      actions:
+        delete:
+          label: "删除",
+          action: () =>
+            item = @collection.get($cur.attr('data-id'))
+            item.destroy()
+            msg.hide()
+
+        cancel:
+          label: "亲我后悔了",
+          action: () ->
+            msg.hide()
+    )
+
