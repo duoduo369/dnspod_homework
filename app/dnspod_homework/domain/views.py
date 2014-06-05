@@ -45,7 +45,7 @@ class DomainListView(APIView):
             return Response('need domain', HTTP_400_BAD_REQUEST)
         api = DomainCreate(domain, **get_login_pair(request))
         try:
-            rep = api()
+            rep = api().get('domain')
         except Exception as e:
             rep = e.message
             return Response(rep, HTTP_406_NOT_ACCEPTABLE)
