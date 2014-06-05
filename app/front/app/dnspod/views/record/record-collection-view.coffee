@@ -11,6 +11,7 @@ module.exports = class RecordCollectionView extends CollectionView
     'click .add': 'add_dom'
     'submit form': 'add_record'
     'click .cancel': 'cancel_add'
+    'click .delete': 'delete_record'
 
   initialize: =>
     super
@@ -22,7 +23,7 @@ module.exports = class RecordCollectionView extends CollectionView
       .html('''
         <div class='row'>
           <div class='col-md-2'>
-            <select class="form-control" name='name'>
+            <select class="form-control" name='sub_domain'>
               <option value='www'>www</option>
               <option value='@'>@</option>
               <option value='*'>*</option>
@@ -72,15 +73,12 @@ module.exports = class RecordCollectionView extends CollectionView
     data = $cur.serializeObject()
     data['domain_id'] = @collection.options['domain_id']
     item = new RecordItem(data)
-    console.log item
     item.save()
       .success((rep)=>
         @collection.unshift(item)
         $cur.parent().remove()
-        console.log 'su'
       )
       .error((rep) ->
-        console.log 'error'
         if rep.responseJSON['status']?
           message = rep.responseJSON['status']['message']
         else
@@ -97,3 +95,23 @@ module.exports = class RecordCollectionView extends CollectionView
     cur = e.currentTarget
     $(cur).parent().parent().remove()
     return false
+
+  delete_record: (e) =>
+    $cur = $(e.currentTarget)
+    msg = Messenger().post(
+      message: "确定删除?",
+
+      actions:
+        delete:
+          label: "删除",
+          action: () =>
+            item = @collection.get($cur.attr('data-id'))
+            item.options['domain_id'] = @collection.options['domain_id']
+            item.destroy()
+            msg.hide()
+
+        cancel:
+          label: "亲我后悔了",
+          action: () ->
+            msg.hide()
+    )
