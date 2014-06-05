@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import multiprocessing
 BASE_PATH = '/opt/dnspod_homework'
 bind = "0:9000"
